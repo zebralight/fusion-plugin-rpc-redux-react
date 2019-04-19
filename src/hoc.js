@@ -86,7 +86,6 @@ export function withRPCRedux<Props: {}>(
     withRPCRedux.displayName = 'WithRPCRedux' + '(' + displayName + ')';
     withRPCRedux.contextTypes = {
       rpc: PropTypes.object.isRequired,
-      store: PropTypes.object.isRequired,
     };
     return withRPCRedux;
   };
