@@ -6,14 +6,14 @@
  * @flow
  */
 
-import * as React from 'react';
+import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 
-import {ProviderPlugin} from 'fusion-react';
-import rpc, {mock as RPCMock} from 'fusion-plugin-rpc';
-import type {RPCType, RPCDepsType} from 'fusion-plugin-rpc';
+import { ProviderPlugin } from 'fusion-react';
+import rpc, { mock as RPCMock } from 'fusion-plugin-rpc';
+import type { RPCType, RPCDepsType } from 'fusion-plugin-rpc';
 
-class RPCProvider extends React.Component<*> {
+class RPCProvider extends Component<*> {
   rpc: typeof rpc;
 
   constructor(props, context) {
@@ -21,15 +21,15 @@ class RPCProvider extends React.Component<*> {
     this.rpc = props.provides.from(props.ctx);
   }
   getChildContext() {
-    return {rpc: this.rpc};
+    return { rpc: this.rpc };
   }
   render() {
-    return React.Children.only(this.props.children);
+    return Children.only(this.props.children);
   }
 }
 
 RPCProvider.childContextTypes = {
-  rpc: PropTypes.object.isRequired,
+  rpc: PropTypes.object.isRequired
 };
 
 export default ProviderPlugin.create<RPCDepsType, RPCType>(
