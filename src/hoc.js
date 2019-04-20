@@ -8,7 +8,7 @@
 
 import PropTypes from 'prop-types';
 import React, {type ComponentType} from 'react';
-import {ReactReduxContext} from 'react-redux';
+import ReactRedux from 'react-redux';
 import type {Reducer} from 'redux';
 import {createRPCHandler, createRPCReactors} from 'fusion-rpc-redux';
 
@@ -57,8 +57,28 @@ export function withRPCRedux<Props: {}>(
   return (Component: ComponentType<Props>) => {
     const withRPCRedux = (oldProps, context) => {
       const {rpc} = context;
-      return (
-        <ReactReduxContext.Consumer>
+      return context.store && !ReactRedux.ReactReduxContext ? (
+        (function() {
+          if (mapStateToParams) {
+            const mapState = mapStateToParams;
+            mapStateToParams = (state, args) => mapState(state, args, oldProps);
+          }
+          const handler = createRPCHandler({
+            rpcId,
+            rpc,
+            store: context.store,
+            actions,
+            mapStateToParams,
+            transformParams,
+          });
+          const props = {
+            ...oldProps,
+            [propName]: handler,
+          };
+          return React.createElement(Component, props);
+        })()
+      ) : (
+        <ReactRedux.ReactReduxContext.Consumer>
           {({store}) => {
             if (mapStateToParams) {
               const mapState = mapStateToParams;
@@ -79,13 +99,14 @@ export function withRPCRedux<Props: {}>(
             };
             return React.createElement(Component, props);
           }}
-        </ReactReduxContext.Consumer>
+        </ReactRedux.ReactReduxContext.Consumer>
       );
     };
     const displayName = Component.displayName || Component.name || 'Anonymous';
     withRPCRedux.displayName = 'WithRPCRedux' + '(' + displayName + ')';
     withRPCRedux.contextTypes = {
       rpc: PropTypes.object.isRequired,
+      store: PropTypes.object,
     };
     return withRPCRedux;
   };
