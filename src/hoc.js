@@ -59,6 +59,9 @@ export function withRPCRedux<Props: {}>(
       const {rpc} = context;
       return context.store && !ReactRedux.ReactReduxContext ? (
         (function() {
+          console.warn(
+            'Warning: React-Redux 5 is deprecated.  Please upgrade to a verion of React-Redux >= 6 when using fusion-plugin-rpc-redux-react.'
+          );
           if (mapStateToParams) {
             const mapState = mapStateToParams;
             mapStateToParams = (state, args) => mapState(state, args, oldProps);
