@@ -59,6 +59,7 @@ export function withRPCRedux<Props: {}>(
       const {rpc} = context;
       return context.store && !ReactRedux.ReactReduxContext ? (
         (function() {
+          // eslint-disable-next-line no-console
           console.warn(
             'Warning: React-Redux 5 is deprecated.  Please upgrade to a verion of React-Redux >= 6 when using fusion-plugin-rpc-redux-react.'
           );
