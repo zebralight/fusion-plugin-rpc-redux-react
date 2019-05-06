@@ -84,6 +84,13 @@ test('withRPCRedux hoc', t => {
   const renderer = new ShallowRenderer();
   const expectedActions = ['TEST_START', 'TEST_SUCCESS'];
   const expectedPayloads = ['test-args', 'test-resolve'];
+  const store = {
+    dispatch(action) {
+      t.equal(action.type, expectedActions.shift());
+      t.equal(action.payload, expectedPayloads.shift());
+    },
+    getState() {},
+  };
   renderer.render(React.createElement(Connected), {
     rpc: {
       request(method, args) {
@@ -92,21 +99,22 @@ test('withRPCRedux hoc', t => {
         return Promise.resolve('test-resolve');
       },
     },
-    store: {
-      dispatch(action) {
-        t.equal(action.type, expectedActions.shift());
-        t.equal(action.payload, expectedPayloads.shift());
-      },
-      getState() {},
-    },
+    store,
   });
   const rendered = renderer.getRenderOutput();
-  t.equal(
-    typeof rendered.props.test,
-    'function',
-    'passes the handler through to props'
-  );
-  rendered.props.test('test-args');
+
+  if (rendered.props.test) {
+    t.equal(
+      typeof rendered.props.test,
+      'function',
+      'passes the handler through to props'
+    );
+    rendered.props.test('test-args');
+  } else {
+    const {test: handler} = rendered.props.children({store}).props;
+    t.equal(typeof test, 'function', 'passes the handler through to props');
+    handler('test-args');
+  }
   t.end();
 });
 
@@ -124,6 +132,13 @@ test('withRPCReactor hoc', t => {
   const renderer = new ShallowRenderer();
   const expectedActions = ['TEST_START', 'TEST_SUCCESS'];
   const expectedPayloads = ['test-args', 'test-resolve'];
+  const store = {
+    dispatch(action) {
+      t.equal(action.type, expectedActions.shift());
+      t.equal(action.payload, expectedPayloads.shift());
+    },
+    getState() {},
+  };
   renderer.render(React.createElement(Connected), {
     rpc: {
       request(method, args) {
@@ -132,21 +147,21 @@ test('withRPCReactor hoc', t => {
         return Promise.resolve('test-resolve');
       },
     },
-    store: {
-      dispatch(action) {
-        t.equal(action.type, expectedActions.shift());
-        t.equal(action.payload, expectedPayloads.shift());
-      },
-      getState() {},
-    },
+    store,
   });
   const rendered = renderer.getRenderOutput();
-  t.equal(
-    typeof rendered.props.test,
-    'function',
-    'passes the handler through to props'
-  );
-  rendered.props.test('test-args');
+  if (rendered.props.test) {
+    t.equal(
+      typeof rendered.props.test,
+      'function',
+      'passes the handler through to props'
+    );
+    rendered.props.test('test-args');
+  } else {
+    const {test: handler} = rendered.props.children({store}).props;
+    t.equal(typeof test, 'function', 'passes the handler through to props');
+    handler('test-args');
+  }
   t.end();
 });
 
