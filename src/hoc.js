@@ -57,7 +57,7 @@ export function withRPCRedux<Props: {}>(
   return (Component: ComponentType<Props>) => {
     const withRPCRedux = (oldProps, context) => {
       const {rpc} = context;
-      return context.store && !ReactRedux.ReactReduxContext ? (
+      return context.store && ReactRedux && !ReactRedux.ReactReduxContext ? (
         (function() {
           // eslint-disable-next-line no-console
           console.warn(
