@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Children } from 'react';
-import ReactRedux from 'react-redux';
+import { ReactReduxContext } from 'react-redux';
 import { createRPCHandler, createRPCReactors, createRPCReducer } from 'fusion-rpc-redux';
 export { createRPCReducer } from 'fusion-rpc-redux';
 import { ProviderPlugin } from 'fusion-react';
@@ -42,7 +42,7 @@ function withRPCRedux(rpcId, {
       const {
         rpc: rpc$$1
       } = context;
-      return context.store && ReactRedux && !ReactRedux.ReactReduxContext ? function () {
+      return context.store && !ReactReduxContext ? function () {
         // eslint-disable-next-line no-console
         console.warn('Warning: React-Redux 5 is deprecated.  Please upgrade to a verion of React-Redux >= 6 when using fusion-plugin-rpc-redux-react.');
 
@@ -66,7 +66,7 @@ function withRPCRedux(rpcId, {
         });
 
         return React.createElement(Component$$1, props);
-      }() : React.createElement(ReactRedux.ReactReduxContext.Consumer, null, ({
+      }() : React.createElement(ReactReduxContext.Consumer, null, ({
         store
       }) => {
         if (mapStateToParams) {

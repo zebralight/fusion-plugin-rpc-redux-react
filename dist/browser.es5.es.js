@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Children } from 'react';
-import ReactRedux from 'react-redux';
+import { ReactReduxContext } from 'react-redux';
 import { createRPCHandler, createRPCReactors, createRPCReducer } from 'fusion-rpc-redux';
 export { createRPCReducer } from 'fusion-rpc-redux';
 import { ProviderPlugin } from 'fusion-react';
@@ -43,7 +43,7 @@ function withRPCRedux(rpcId, _temp2) {
   return function (Component$$1) {
     var withRPCRedux = function withRPCRedux(oldProps, context) {
       var rpc$$1 = context.rpc;
-      return context.store && ReactRedux && !ReactRedux.ReactReduxContext ? function () {
+      return context.store && !ReactReduxContext ? function () {
         var _objectSpread2;
 
         // eslint-disable-next-line no-console
@@ -69,7 +69,7 @@ function withRPCRedux(rpcId, _temp2) {
         var props = _objectSpread({}, oldProps, (_objectSpread2 = {}, _objectSpread2[propName] = handler, _objectSpread2));
 
         return React.createElement(Component$$1, props);
-      }() : React.createElement(ReactRedux.ReactReduxContext.Consumer, null, function (_ref3) {
+      }() : React.createElement(ReactReduxContext.Consumer, null, function (_ref3) {
         var _objectSpread3;
 
         var store = _ref3.store;

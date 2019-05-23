@@ -7,7 +7,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var PropTypes = _interopDefault(require('prop-types'));
 var React = require('react');
 var React__default = _interopDefault(React);
-var ReactRedux = _interopDefault(require('react-redux'));
+var reactRedux = require('react-redux');
 var fusionRpcRedux = require('fusion-rpc-redux');
 var fusionReact = require('fusion-react');
 var rpc = require('fusion-plugin-rpc');
@@ -48,7 +48,7 @@ function withRPCRedux(rpcId, {
       const {
         rpc: rpc$$1
       } = context;
-      return context.store && ReactRedux && !ReactRedux.ReactReduxContext ? function () {
+      return context.store && !reactRedux.ReactReduxContext ? function () {
         // eslint-disable-next-line no-console
         console.warn('Warning: React-Redux 5 is deprecated.  Please upgrade to a verion of React-Redux >= 6 when using fusion-plugin-rpc-redux-react.');
 
@@ -72,7 +72,7 @@ function withRPCRedux(rpcId, {
         });
 
         return React__default.createElement(Component, props);
-      }() : React__default.createElement(ReactRedux.ReactReduxContext.Consumer, null, ({
+      }() : React__default.createElement(reactRedux.ReactReduxContext.Consumer, null, ({
         store
       }) => {
         if (mapStateToParams) {

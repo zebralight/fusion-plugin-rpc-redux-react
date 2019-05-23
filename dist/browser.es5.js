@@ -7,7 +7,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var PropTypes = _interopDefault(require('prop-types'));
 var React = require('react');
 var React__default = _interopDefault(React);
-var ReactRedux = _interopDefault(require('react-redux'));
+var reactRedux = require('react-redux');
 var fusionRpcRedux = require('fusion-rpc-redux');
 var fusionReact = require('fusion-react');
 var rpc = require('fusion-plugin-rpc');
@@ -49,7 +49,7 @@ function withRPCRedux(rpcId, _temp2) {
   return function (Component) {
     var withRPCRedux = function withRPCRedux(oldProps, context) {
       var rpc$$1 = context.rpc;
-      return context.store && ReactRedux && !ReactRedux.ReactReduxContext ? function () {
+      return context.store && !reactRedux.ReactReduxContext ? function () {
         var _objectSpread2;
 
         // eslint-disable-next-line no-console
@@ -75,7 +75,7 @@ function withRPCRedux(rpcId, _temp2) {
         var props = _objectSpread({}, oldProps, (_objectSpread2 = {}, _objectSpread2[propName] = handler, _objectSpread2));
 
         return React__default.createElement(Component, props);
-      }() : React__default.createElement(ReactRedux.ReactReduxContext.Consumer, null, function (_ref3) {
+      }() : React__default.createElement(reactRedux.ReactReduxContext.Consumer, null, function (_ref3) {
         var _objectSpread3;
 
         var store = _ref3.store;
